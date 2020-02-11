@@ -1,5 +1,8 @@
 #!/bin/sh
 
+x11vnc -storepasswd $VNC_PASS /etc/vncsecret
+chmod 444 /etc/vncsecret
+
 if [ -f "/data/download" ]; then
     echo "Creating download directory..."
     mkdir -p /data/download
@@ -23,15 +26,12 @@ echo "Applying configuration..."
 
 echo "Running virtual desktop..."
 /usr/bin/supervisord -n &
-
-echo "Waiting to run emule... 5"
-sleep 5
-echo "Waiting to run emule... 4"
-sleep 5
-echo "Waiting to run emule... 3"
-sleep 5
-echo "Waiting to run emule... 2"
-sleep 5
-echo "Waiting to run emule... 1"
-sleep 5
+sleep 2
+#winetricks vd=$RESOLUTION
+winetricks vd=off
+#winetricks orm=backbuffer
+#winetricks ao=enabled
+winetricks windowmanagerdecorated=y
+winetricks windowmanagermanaged=y
+#/usr/bin/wine explorer /desktop=shell,$RESOLUTION /app/emule.exe
 /usr/bin/wine /app/emule.exe
